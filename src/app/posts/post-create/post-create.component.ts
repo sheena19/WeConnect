@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core'; // we add output decorator just to really make event listen from outside
+import { Post } from "../post.model";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: 'app-post-create',
@@ -9,12 +11,15 @@ export class PostCreateComponent {
   enteredTitle = '';
   enteredContent = '';
 
-  @Output() postCreated = new EventEmitter();
+  @Output() postCreated = new EventEmitter<Post>();
 
-  onAddPost() {
-    const post = {
-       title: this.enteredTitle,
-      content: this.enteredContent
+  onAddPost(form: NgForm) {
+    if ((form.invalid)){
+      return;
+    }
+    const post: Post = {
+       title: form.value.title,
+      content: form.value.content
     };
     this.postCreated.emit(post);
   }
