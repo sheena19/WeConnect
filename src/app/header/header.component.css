@@ -9,6 +9,9 @@ a {
   color: white;
 }
 
+ul  {
+  display: flex;
+}
 .spacer {
   flex: 1 1 auto; /*keeps as many spaces you want*/
 }
