@@ -33,7 +33,9 @@ router.post("/signup", (req, res, next) => {
 router.post("/login", (req, res, next) => {
   User.findOne({email: req.body.email})
     .then(user => {
+
       if (!user) {
+        console.log(user);
         return res.status(401).json({
           message: "Auth failed!"
         });
@@ -59,7 +61,6 @@ router.post("/login", (req, res, next) => {
       });
     })
     .catch(err => {
-      console.log(err);
       res.status(401).json({
         message: "Auth Failed!"
       });

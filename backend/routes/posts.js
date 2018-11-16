@@ -2,6 +2,7 @@ const express = require('express');
 // multer is install which is used to extract file from html
 const multer = require('multer');
 const Post = require('../models/post');
+const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
 
 const MIME_TYPE_MAP = {
@@ -52,7 +53,7 @@ router.get("", (req, res, next) => {
 });
 
 // multer will try to get a single file which is of property image from html
-router.post("", multer({storage: storage}).single("image"), (req, res, next) => {
+router.post("", checkAuth, multer({storage: storage}).single("image"), (req, res, next) => {
   const url = req.protocol + '://' + req.get("host");
   const post = new Post({
     title: req.body.title,
@@ -83,7 +84,7 @@ router.get("/:id", (req, res, next) => {
   })
 });
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", checkAuth, (req, res, next) => {
   let imagePath = req.body.imagePath;
   //checks whether the image is string or an object
   if (req.file) {
@@ -101,10 +102,8 @@ router.put("/:id", (req, res, next) => {
   });
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", checkAuth, (req, res, next) => {
   Post.deleteOne({_id: req.params.id}).then(result => {
-    console.log(result);
-    console.log(req.params.id);
     res.status(200).json({message: 'Post deleted!'});
   });
 });
