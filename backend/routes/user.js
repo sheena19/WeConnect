@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 let secret = "abcdef";
 
 const router = express.Router();
-const hashPwd = crypto.createHmac('sha256', secret);
+// const hashPwd = crypto.createHmac('sha256', secret);
 
 router.post("/signup", (req, res, next) => {
-  const hash = hashPwd
+  const hash = crypto.createHmac('sha256', secret)
     .update(req.body.password)
     .digest('hex');
   console.log(hash);
@@ -33,16 +33,13 @@ router.post("/signup", (req, res, next) => {
 router.post("/login", (req, res, next) => {
   User.findOne({email: req.body.email})
     .then(user => {
-
       if (!user) {
-        console.log(user);
         return res.status(401).json({
           message: "Auth failed!"
         });
       }
       fetchedUser = user;
-
-      const hash = hashPwd.update(req.body.password).digest("hex");
+      const hash = crypto.createHmac('sha256', secret).update(req.body.password).digest("hex");
       return (user.password === hash);
     })
     .then(result => {
