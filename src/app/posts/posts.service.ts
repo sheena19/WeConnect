@@ -30,8 +30,7 @@ export class PostsService {
               imagePath: post.imagePath
             };
           }), maxPosts: postData.maxPosts
-        }
-          ;
+        };
       }))
       .subscribe(transformedPostData => {
         this.posts = transformedPostData.posts;

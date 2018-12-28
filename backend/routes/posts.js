@@ -73,7 +73,6 @@ router.post("", checkAuth, multer({storage: storage}).single("image"), (req, res
   });
 });
 
-
 router.get("/:id", (req, res, next) => {
   Post.findById(req.params.id).then(post => {
     if (post) {
